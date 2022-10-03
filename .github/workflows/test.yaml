@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/lunaisnotaboy/atbooru:${{ github.sha }}
+      image: ghcr.io/lunaisnotaboy/qtbooru:${{ github.sha }}
       options: --user root
 
     env:
