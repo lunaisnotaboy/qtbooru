@@ -9,6 +9,10 @@ gem "sanitize"
 gem 'ruby-vips'
 gem 'diff-lcs', :require => "diff/lcs/array"
 gem 'bcrypt', :require => "bcrypt"
+gem 'capistrano', '~> 3.10'
+gem 'capistrano-deploytags', '~> 1.0.0', require: false
+gem 'capistrano-rails'
+gem 'capistrano-rbenv'
 gem 'rubyzip', :require => "zip"
 gem 'stripe'
 gem 'aws-sdk-sqs', '~> 1'
