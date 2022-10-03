@@ -1,6 +1,6 @@
 FROM ubuntu:22.04 AS base
 
-WORKDIR /danbooru
+WORKDIR /qtbooru
 ENV PATH="/root/.asdf/bin:/root/.asdf/shims:$PATH:/usr/lib/postgresql/14/bin"
 
 COPY config/docker/build-base-image.sh .
@@ -8,7 +8,7 @@ COPY config/docker/build-base-image.sh .
 RUN \
   ./build-base-image.sh && \
   chmod go+rx /root && \
-  useradd --home-dir /root --user-group danbooru && \
+  useradd --home-dir /root --user-group qtbooru && \
   rm build-base-image.sh
 
 
@@ -65,15 +65,15 @@ ENV LD_PRELOAD=libjemalloc.so.2
 ENV MALLOC_CONF=background_thread:true,narenas:2,dirty_decay_ms:1000,muzzy_decay_ms:0,tcache:false
 
 COPY --from=development /root /root
-COPY --from=development /danbooru /danbooru
+COPY --from=development /qtbooru /qtbooru
 
 COPY . .
 ARG SOURCE_COMMIT
 RUN echo "$SOURCE_COMMIT" > REVISION
 
-USER danbooru
+USER qtbooru
 ENTRYPOINT ["tini", "--"]
 CMD ["bin/rails", "server"]
 
 # https://github.com/opencontainers/image-spec/blob/main/annotations.md
-LABEL org.opencontainers.image.source https://github.com/danbooru/danbooru
+LABEL org.opencontainers.image.source https://github.com/lunaisnotaboy/qtbooru

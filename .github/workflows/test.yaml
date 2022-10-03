@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/danbooru/danbooru:${{ github.sha }}
+      image: ghcr.io/lunaisnotaboy/atbooru:${{ github.sha }}
       options: --user root
 
     env:
@@ -39,7 +39,7 @@ jobs:
 
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      DATABASE_URL: postgresql://danbooru:danbooru@postgres/danbooru
+      DATABASE_URL: postgresql://qtbooru:qtbooru@postgres/qtbooru
       DANBOORU_SECRET_KEY_BASE: 1234
       DANBOORU_AWS_SQS_ENABLED: false
       DANBOORU_TWITTER_API_KEY: ${{ secrets.DANBOORU_TWITTER_API_KEY }}
@@ -96,12 +96,12 @@ jobs:
     - name: Prepare database
       run: |
         export HOME=/root
-        cd /danbooru
+        cd /qtbooru
         bin/rails db:test:prepare
 
     - name: Run tests
       run: |
         export HOME=/root
-        cd /danbooru
+        cd /qtbooru
         ln -s packs public/packs-test
         bin/rails test

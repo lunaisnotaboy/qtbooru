@@ -60,8 +60,7 @@ jobs:
         id: metadata
         with:
           images: |
-            docker.io/evazion/danbooru
-            ghcr.io/danbooru/danbooru
+            ghcr.io/lunaisnotaboy/qtbooru
           tags: |
             type=sha,format=long,prefix=
             type=ref,event=branch
