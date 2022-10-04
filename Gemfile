@@ -2,7 +2,7 @@ source 'https://rubygems.org/'
 
 gem 'dotenv-rails', :require => "dotenv/rails-now"
 
-gem "rails", "~> 7.0"
+gem 'rails', '~> 7.0', '>= 7.0.4'
 gem "pg"
 gem "simple_form"
 gem "sanitize"
@@ -47,6 +47,7 @@ gem 'google-cloud-bigquery', require: "google/cloud/bigquery"
 gem 'google-cloud-storage', require: "google/cloud/storage"
 gem 'ed25519'
 gem 'bcrypt_pbkdf' # https://github.com/net-ssh/net-ssh/issues/565
+gem 'newrelic_rpm', require: false
 gem 'clockwork'
 gem 'puma-metrics'
 gem 'puma_worker_killer'
@@ -57,7 +58,6 @@ gem "rbtrace"
 gem "good_job"
 gem "crass"
 gem "public_suffix"
-gem "elastic-apm"
 gem "debug"
 gem "ffaker"
 gem "composite_primary_keys"

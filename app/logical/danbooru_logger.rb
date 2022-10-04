@@ -1,23 +1,25 @@
 # frozen_string_literal: true
 
-# The DanbooruLogger class handles logging messages to the Rails log and to the APM.
+# The DanbooruLogger class handles logging messages to the Rails log and to NewRelic.
 #
 # @see https://guides.rubyonrails.org/debugging_rails_applications.html#the-logger
 class DanbooruLogger
   HEADERS = %w[referer sec-fetch-dest sec-fetch-mode sec-fetch-site sec-fetch-user]
 
-  # Log a message to the Rails log and to the APM.
+  # Log a message to the Rails log and to NewRelic.
   #
   # @param message [String] the message to log
   # @param params [Hash] optional key-value data to log with the message
   def self.info(message, params = {})
     Rails.logger.info(message)
 
-    params = flatten_hash(params).symbolize_keys
-    log_event(:info, message: message, **params)
+    if defined?(::NewRelic)
+      params = flatten_hash(params).symbolize_keys
+      ::NewRelic::Agent.record_custom_event(:info, message: message, **params)
+    end
   end
 
-  # Log an exception to the Rails log and to the APM. The `expected` flag is
+  # Log an exception to the Rails log and to NewRelic. The `expected` flag is
   # used to separate expected exceptions, like search timeouts or auth failures,
   # from unexpected exceptions, like runtime errors, in the error logs.
   #
@@ -32,10 +34,12 @@ class DanbooruLogger
       Rails.logger.error("#{exception.class}: #{exception.message}\n#{backtrace}")
     end
 
-    log_exception(exception, expected: expected, custom_params: params)
+    if defined?(::NewRelic)
+      ::NewRelic::Agent.notice_error(exception, expected: expected, custom_params: params)
+    end
   end
 
-  # Log extra HTTP request data to the APM. Logs the user's IP, user agent,
+  # Log extra HTTP request data to NewRelic. Logs the user's IP, user agent,
   # request params, and session cookies.
   #
   # @param request the HTTP request
@@ -91,24 +95,15 @@ class DanbooruLogger
   def self.add_attributes(prefix, hash)
     attributes = flatten_hash(hash).transform_keys { |key| "#{prefix}.#{key}" }
     attributes.delete_if { |key, value| key.end_with?(*Rails.application.config.filter_parameters.map(&:to_s)) }
-    log_attributes(attributes)
+    add_custom_attributes(attributes)
   end
 
   private_class_method
 
-  def self.log_attributes(attributes)
-    attributes.each do |key, value|
-      ElasticAPM.set_label(key, value)
-    end
-  end
-
-  def self.log_exception(exception, expected: false, custom_params: {})
-    ElasticAPM.report(exception, handled: expected)
-  end
-
-  def self.log_event(level, message: nil, **params)
-    ElasticAPM.set_custom_context(params)
-    ElasticAPM.report_message(message)
+  # @see https://docs.newrelic.com/docs/using-new-relic/data/customize-data/collect-custom-attributes/#ruby-att
+  def self.add_custom_attributes(attributes)
+    return unless defined?(::NewRelic)
+    ::NewRelic::Agent.add_custom_attributes(attributes)
   end
 
   # flatten_hash({ foo: { bar: { baz: 42 } } })

@@ -645,11 +645,10 @@ module Danbooru
       # "redis://localhost:6379"
     end
 
-    # Optional. The URL of the Elastic APM server. Used for application performance monitoring.
-    #
-    # https://www.elastic.co/observability/application-performance-monitoring
-    def elastic_apm_server_url
-      # "http://localhost:8200"
+    # Optional. The license key for your New Relic account.
+    # https://newrelic.com/
+    # https://docs.newrelic.com/docs/accounts/accounts-billing/account-setup/new-relic-license-key/
+    def new_relic_license_key
     end
 
     # True if the Winter Sale is active.
