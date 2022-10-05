@@ -1,3 +1,0 @@
-var current_comment_section = $("div.comments-for-post[data-post-id=<%= @post.id %>]");
-current_comment_section.replaceWith("<%= j render_comment_section(@post, limit: nil, current_user: CurrentUser.user) %>");
-$(window).trigger("danbooru:index_for_post", [<%= @post.id %>]);

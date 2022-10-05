@@ -1,1 +1,0 @@
-../../javascript/src/javascripts/favorites_tooltip_component.js

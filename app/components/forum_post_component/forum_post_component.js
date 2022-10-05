@@ -1,1 +1,0 @@
-../../javascript/src/javascripts/forum_post_component.js

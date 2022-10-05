@@ -1,1 +1,0 @@
-../../javascript/src/javascripts/preview_size_menu_component.js

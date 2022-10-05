@@ -1,1 +1,0 @@
-../../javascript/src/javascripts/post_votes_tooltip_component.js

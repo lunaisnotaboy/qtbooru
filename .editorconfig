@@ -1,14 +1,12 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
 root = true
 
-[**.{js,rb,css,scss,erb,md,json,yml}]
+[*]
 indent_style = space
 indent_size = 2
 end_of_line = lf
-insert_final_newline = true
+charset = utf-8
 trim_trailing_whitespace = true
-
-[**.html.erb]
-indent_size = unset
-
-[app/javascript/vendor/**]
-indent_size = unset
+insert_final_newline = true

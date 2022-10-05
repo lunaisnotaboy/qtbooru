@@ -1,1 +1,0 @@
-../../javascript/src/javascripts/source_data_component.js
