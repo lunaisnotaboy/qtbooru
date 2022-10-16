@@ -131,14 +131,15 @@ class Source::URL::Null < Source::URL
       @work_id = $1
       @page_url = "https://www.facebook.com/photo.php?fbid=#{work_id}"
 
-    # https://gelbooru.com//images/ee/5c/ee5c9a69db9602c95debdb9b98fb3e3e.jpeg
-    # http://simg.gelbooru.com//images/2003/edd1d2b3881cf70c3acf540780507531.png
-    # https://simg3.gelbooru.com//samples/0b/3a/sample_0b3ae5e225072b8e391c827cb470d29c.jpg
-    # https://video-cdn3.gelbooru.com/images/62/95/6295154d082f04009160261b90e7176e.mp4
-    # https://img2.gelbooru.com//images/a9/64/a96478bbf9bc3f0584f2b5ddf56025fa.webm
-    in _, "gelbooru.com", ("images" | "samples"), *subdirs, /^(?:sample_)?(\h{32})\.(jpeg|jpg|png|gif|mp4|webm)$/
-      @md5 = $1
-      @page_url = "https://gelbooru.com/index.php?page=post&s=list&tags=md5:#{@md5}"
+    # https://fori.io/comori22
+    in _, "fori.io", username
+      @username = username
+      @profile_url = "https://www.foriio.com/#{username}"
+
+    # https://www.foriio.com/comori22
+    in _, "foriio.com", username
+      @username = username
+      @profile_url = "https://www.foriio.com/#{username}"
 
     # https://a.hitomi.la/galleries/907838/1.png
     # https://0a.hitomi.la/galleries/1169701/23.png

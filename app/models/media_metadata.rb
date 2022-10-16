@@ -28,4 +28,12 @@ class MediaMetadata < ApplicationRecord
   def metadata
     ExifTool::Metadata.new(self[:metadata])
   end
+
+  def frame_delays
+    metadata["Ugoira:FrameDelays"].to_a
+  end
+
+  def self.available_includes
+    [:media_asset]
+  end
 end

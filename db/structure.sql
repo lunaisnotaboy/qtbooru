@@ -3449,10 +3449,45 @@ CREATE INDEX index_api_keys_on_user_id ON public.api_keys USING btree (user_id);
 
 
 --
+-- Name: index_artist_commentaries_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_artist_commentaries_on_created_at ON public.artist_commentaries USING btree (created_at);
+
+
+--
 -- Name: index_artist_commentaries_on_post_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_artist_commentaries_on_post_id ON public.artist_commentaries USING btree (post_id);
+
+
+--
+-- Name: index_artist_commentaries_on_to_tsvector_original_description; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_artist_commentaries_on_to_tsvector_original_description ON public.artist_commentaries USING gin (to_tsvector('english'::regconfig, original_description));
+
+
+--
+-- Name: index_artist_commentaries_on_to_tsvector_original_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_artist_commentaries_on_to_tsvector_original_title ON public.artist_commentaries USING gin (to_tsvector('english'::regconfig, original_title));
+
+
+--
+-- Name: index_artist_commentaries_on_to_tsvector_translated_description; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_artist_commentaries_on_to_tsvector_translated_description ON public.artist_commentaries USING gin (to_tsvector('english'::regconfig, translated_description));
+
+
+--
+-- Name: index_artist_commentaries_on_to_tsvector_translated_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_artist_commentaries_on_to_tsvector_translated_title ON public.artist_commentaries USING gin (to_tsvector('english'::regconfig, translated_title));
 
 
 --
@@ -3463,10 +3498,38 @@ CREATE INDEX index_artist_commentary_versions_on_created_at ON public.artist_com
 
 
 --
+-- Name: index_artist_commentary_versions_on_original_description; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_artist_commentary_versions_on_original_description ON public.artist_commentary_versions USING gin (to_tsvector('english'::regconfig, original_description));
+
+
+--
+-- Name: index_artist_commentary_versions_on_original_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_artist_commentary_versions_on_original_title ON public.artist_commentary_versions USING gin (to_tsvector('english'::regconfig, original_title));
+
+
+--
 -- Name: index_artist_commentary_versions_on_post_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_artist_commentary_versions_on_post_id ON public.artist_commentary_versions USING btree (post_id);
+
+
+--
+-- Name: index_artist_commentary_versions_on_translated_description; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_artist_commentary_versions_on_translated_description ON public.artist_commentary_versions USING gin (to_tsvector('english'::regconfig, translated_description));
+
+
+--
+-- Name: index_artist_commentary_versions_on_translated_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_artist_commentary_versions_on_translated_title ON public.artist_commentary_versions USING gin (to_tsvector('english'::regconfig, translated_title));
 
 
 --
@@ -3834,6 +3897,20 @@ CREATE INDEX index_dmails_on_title_and_body_tsvector ON public.dmails USING gin 
 
 
 --
+-- Name: index_dmails_on_to_tsvector_english_body; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_dmails_on_to_tsvector_english_body ON public.dmails USING gin (to_tsvector('english'::regconfig, body));
+
+
+--
+-- Name: index_dmails_on_to_tsvector_english_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_dmails_on_to_tsvector_english_title ON public.dmails USING gin (to_tsvector('english'::regconfig, title));
+
+
+--
 -- Name: index_dtext_links_on_link_target; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3866,6 +3943,41 @@ CREATE INDEX index_email_addresses_on_address ON public.email_addresses USING bt
 --
 
 CREATE INDEX index_email_addresses_on_address_trgm ON public.email_addresses USING gin (address public.gin_trgm_ops);
+
+
+--
+-- Name: index_email_addresses_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_addresses_on_created_at ON public.email_addresses USING btree (created_at);
+
+
+--
+-- Name: index_email_addresses_on_is_deliverable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_addresses_on_is_deliverable ON public.email_addresses USING btree (is_deliverable) WHERE (is_deliverable = false);
+
+
+--
+-- Name: index_email_addresses_on_is_verified; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_addresses_on_is_verified ON public.email_addresses USING btree (is_verified) WHERE (is_verified = false);
+
+
+--
+-- Name: index_email_addresses_on_lower_address_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_email_addresses_on_lower_address_unique ON public.email_addresses USING btree (lower((address)::text));
+
+
+--
+-- Name: index_email_addresses_on_normalize_address_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_email_addresses_on_normalize_address_unique ON public.email_addresses USING btree (normalized_address);
 
 
 --
@@ -5725,6 +5837,20 @@ CREATE INDEX index_wiki_pages_on_title_pattern ON public.wiki_pages USING btree 
 
 
 --
+-- Name: index_wiki_pages_on_to_tsvector_english_body; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_wiki_pages_on_to_tsvector_english_body ON public.wiki_pages USING gin (to_tsvector('english'::regconfig, body));
+
+
+--
+-- Name: index_wiki_pages_on_to_tsvector_english_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_wiki_pages_on_to_tsvector_english_title ON public.wiki_pages USING gin (to_tsvector('english'::regconfig, (title)::text));
+
+
+--
 -- Name: index_wiki_pages_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6749,6 +6875,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220923010905'),
 ('20220924092056'),
 ('20220925045236'),
-('20220926050108');
+('20220926050108'),
+('20221003080342'),
+('20221010035855');
 
 

@@ -56,8 +56,8 @@ class Post < ApplicationRecord
   belongs_to :uploader, :class_name => "User", :counter_cache => "post_upload_count"
   belongs_to :parent, class_name: "Post", optional: true
   has_one :media_asset, -> { active }, foreign_key: :md5, primary_key: :md5
+  has_one :media_metadata, through: :media_asset
   has_one :artist_commentary, :dependent => :destroy
-  has_one :pixiv_ugoira_frame_data, class_name: "PixivUgoiraFrameData", foreign_key: :md5, primary_key: :md5
   has_one :vote_by_current_user, -> { active.where(user_id: CurrentUser.id) }, class_name: "PostVote" # XXX using current user here is wrong
   has_many :flags, :class_name => "PostFlag", :dependent => :destroy
   has_many :appeals, :class_name => "PostAppeal", :dependent => :destroy
@@ -305,6 +305,11 @@ class Post < ApplicationRecord
       flags.join(" ")
     end
 
+    # g => 0, s => 1, q => 2, e => 3
+    def rating_id
+      RATINGS.keys.index(rating)
+    end
+
     def pretty_rating
       RATINGS.fetch(rating)
     end
@@ -464,6 +469,7 @@ class Post < ApplicationRecord
       tags << "greyscale" if media_asset.is_greyscale?
       tags << "exif_rotation" if media_asset.is_rotated?
       tags << "non-repeating_animation" if media_asset.is_non_repeating_animation?
+      tags << "ai-generated" if media_asset.is_ai_generated?
 
       tags
     end
@@ -1404,7 +1410,7 @@ class Post < ApplicationRecord
           :last_comment_bumped_at, :last_commented_at, :last_noted_at,
           :uploader, :approver, :parent,
           :artist_commentary, :flags, :appeals, :notes, :comments, :children,
-          :approvals, :replacements, :pixiv_ugoira_frame_data],
+          :approvals, :replacements],
           current_user: current_user
         )
 
@@ -1628,8 +1634,8 @@ class Post < ApplicationRecord
     # attributes accessible through the ?only= parameter
     %i[
       uploader approver flags appeals events parent children notes
-      comments approvals disapprovals replacements pixiv_ugoira_frame_data
-      artist_commentary media_asset ai_tags
+      comments approvals disapprovals replacements
+      artist_commentary media_asset media_metadata ai_tags
     ]
   end
 end
