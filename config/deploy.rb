@@ -12,8 +12,7 @@ set :default_stage, "test"
 set :application, "qtbooru"
 set :repo_url,  "https://github.com/lunaisnotaboy/qtbooru.git"
 set :deploy_to, "/var/www/qtbooru"
-append :linked_dirs, ".yarn/cache", "log", "node_modules", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle"
-append :linked_files, ".yarn/build-state.yml", ".yarn/install-state.gz"
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle"
 set :branch, ENV.fetch("branch", "master")
 
 # skip migrations if files in db/migrate weren't modified
