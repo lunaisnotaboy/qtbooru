@@ -5,8 +5,10 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 /.bundle
+/.idea
 /.vscode/*
 !/.vscode/extensions.json
+!/.vscode/settings.json
 /.yarn/*
 !/.yarn/patches
 !/.yarn/plugins

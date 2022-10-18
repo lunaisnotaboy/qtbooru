@@ -1,0 +1,6 @@
+{
+  "path-intellisense.mappings": {
+    "@": "${workspaceRoot}/app/frontend/"
+  },
+  "typescript.tsdk": "node_modules\\typescript\\lib"
+}
